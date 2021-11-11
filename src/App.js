@@ -1,25 +1,34 @@
-import logo from './logo.svg';
-import './App.css';
+import {useEffect} from 'react'
+import MainScreen from './screens/MainScreen'
+import {useDispatch} from 'react-redux'
+import {changeScreenWidth, changeScreenHeight} from './reduxUtils'
+import WebFont from 'webfontloader'
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    const dispatch = useDispatch()
+
+    useEffect(() => {
+        updateDimensions()
+        window.addEventListener("resize", updateDimensions)
+        WebFont.load({
+            google: {
+                families: ['Barlow']
+            }
+        })
+    }, [])
+
+    const updateDimensions = () => {
+        const width = window.innerWidth
+        const height = window.innerHeight
+        dispatch(changeScreenWidth(width))
+        dispatch(changeScreenHeight(height))
+    }
+
+    return (
+        <div className="App">
+            <MainScreen/>
+        </div>
+    );
 }
 
 export default App;
